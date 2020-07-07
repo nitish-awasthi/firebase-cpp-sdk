@@ -44,7 +44,7 @@ jobs:
       - name: Install system level applications
         id: ubuntu-apt-install
         run: |
-          sudo apt-get install openssl protobuf
+          sudo apt install openssl
 
       - name: Install pip packages
         run: |
