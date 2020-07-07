@@ -41,6 +41,11 @@ jobs:
           python-version: ${{ matrix.python_version }}
           architecture: ${{ matrix.architecture }}
 
+      - name: Install system level applications
+        id: ubuntu-apt-install
+        run: |
+          sudo apt install openssl protobuf
+
       - name: Install pip packages
         run: |
           python -m pip install --upgrade pip
