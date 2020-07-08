@@ -44,7 +44,7 @@ jobs:
       - name: Install system level applications
         id: ubuntu-apt-install
         run: |
-          sudo apt-get install openssl protobuf-compiler libprotobuf-dev libsecret-1
+          sudo apt-get install openssl protobuf-compiler libprotobuf-dev
 
       - name: Install pip packages
         run: |
