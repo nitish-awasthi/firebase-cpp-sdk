@@ -55,15 +55,15 @@ jobs:
       
       - name: Build protobuf library
         if: steps.cache-protobuf.outputs.cache-hit != 'true'
-          run: |
-            git clone https://github.com/protocolbuffers/protobuf.git
-            cd protobuf
-            git submodule update --init --recursive
-            ./autogen.sh
-            ./autogen.sh
-            ./configure
-            make
-            make check
+        run: |
+          git clone https://github.com/protocolbuffers/protobuf.git
+          cd protobuf
+          git submodule update --init --recursive
+          ./autogen.sh
+          ./autogen.sh
+          ./configure
+          make
+          make check
 
       - name: Install protobuf library
         run: |
