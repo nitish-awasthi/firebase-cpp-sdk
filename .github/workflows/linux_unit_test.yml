@@ -41,11 +41,11 @@ jobs:
           python-version: ${{ matrix.python_version }}
           architecture: ${{ matrix.architecture }}
 
-      # "autoconf automake libtool curl make g++ unzip" are all for installing protobuf
       - name: Install system level applications
         id: ubuntu-apt-install
         run: |
-          sudo apt-get install openssl autoconf automake libtool curl make g++ unzip
+          sudo apt-get install openssl
+          sudo snap install protobuf
 
       - name: Install pip packages
         run: |
