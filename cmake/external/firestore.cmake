@@ -22,7 +22,7 @@ endif()
 # https://github.com/firebase/firebase-ios-sdk/pull/5807.
 #
 # This should be released with the next version after Firestore-1.15.0.
-set(version 05026f3df92cdee7b91fccc72a7195be2618acdf)
+set(version f33276f5305bb81b67e006f50b14f4a2adc3cb60)
 
 ExternalProject_Add(
   firestore
