@@ -128,6 +128,12 @@ def main():
   print("Disk check:\n %s", output.stdout)
   print("\n")
   
+  print ("After vcpkg: check size of external")
+  diskspaceCmd = ['df','-h', 'external']
+  output = utils.run_command(diskspaceCmd, capture_output=True)
+  print("Disk check:\n %s", output.stdout)
+  print("\n")
+
   # CMake configure
   cmake_configure(args.build_dir, args.arch, args.build_tests, args.config)
 
@@ -147,10 +153,18 @@ def main():
 
   p = subprocess.Popen(cmd)
   while(p.poll() is None):
+    print("System disk space usage")
     diskspaceCmd = ['df','-h']
     output = utils.run_command(diskspaceCmd, capture_output=True)
     print("Disk check:\n %s", output.stdout)
     print("\n")
+
+    print("Build directory disk space usage")
+    diskspaceCmd = ['df','-h', 'build']
+    output = utils.run_command(diskspaceCmd, capture_output=True)
+    print("Disk check:\n %s", output.stdout)
+    print("\n")
+
     time.sleep(120)
     
   #utils.run_command(cmd)
