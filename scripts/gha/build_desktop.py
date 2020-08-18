@@ -37,6 +37,8 @@ python scripts/gha/build_desktop.py --target firebase_app firebase_auth
 import argparse
 import os
 import utils
+import subprocess
+import time
 
 
 def install_cpp_dependencies_with_vcpkg(arch):
@@ -125,7 +127,15 @@ def main():
     # Example:  cmake --build build -j 8 --target firebase_app firebase_auth
     cmd.append('--target')
     cmd.extend(args.target)
-  utils.run_command(cmd)
+  p = subprocess.Popen(cmd)
+  while(p.poll() is None):
+    diskspaceCmd = ['df','-h']
+    output = utils.run_command(diskspaceCmd, capture_output=True)
+    print("Disk check:\n %s", output.stdout)
+    print("\n")
+    time.sleep(180)
+    
+  #utils.run_command(cmd)
 
 
 def parse_cmdline_args():
