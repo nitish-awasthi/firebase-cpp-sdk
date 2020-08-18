@@ -39,6 +39,7 @@ import os
 import utils
 import subprocess
 import time
+import shutil
 
 
 def install_cpp_dependencies_with_vcpkg(arch):
@@ -129,10 +130,11 @@ def main():
     cmd.extend(args.target)
   p = subprocess.Popen(cmd)
   while(p.poll() is None):
-    diskspaceCmd = ['df','-h']
-    output = utils.run_command(diskspaceCmd, capture_output=True)
-    print("Disk check:\n %s", output.stdout)
-    print("\n")
+    total, used, free = shutil.disk_usage("/")
+    print("Disk check:\n")
+    print("Total: {0}\n".format(tota/1000000))
+    print("Used: {0}\n".format(used/1000000))
+    print("Free: {0}\n".format(free/1000000))
     time.sleep(180)
     
   #utils.run_command(cmd)
