@@ -39,7 +39,6 @@ import os
 import utils
 import subprocess
 import time
-import shutil
 
 
 def install_cpp_dependencies_with_vcpkg(arch):
@@ -109,6 +108,11 @@ def cmake_configure(build_dir, arch, build_tests=True, config=None):
 
 def main():
   args = parse_cmdline_args()
+  print ("Start of main")
+  diskspaceCmd = ['df','-h']
+  output = utils.run_command(diskspaceCmd, capture_output=True)
+  print("Disk check:\n %s", output.stdout)
+  print("\n")
   
   # Ensure that the submodules are initialized and updated
   # Example: vcpkg is a submodule (external/vcpkg)
@@ -118,8 +122,20 @@ def main():
   # Install platform dependent cpp dependencies with vcpkg 
   install_cpp_dependencies_with_vcpkg(args.arch)
 
+  print ("After vcpkg")
+  diskspaceCmd = ['df','-h']
+  output = utils.run_command(diskspaceCmd, capture_output=True)
+  print("Disk check:\n %s", output.stdout)
+  print("\n")
+  
   # CMake configure
   cmake_configure(args.build_dir, args.arch, args.build_tests, args.config)
+
+  print ("After configure")
+  diskspaceCmd = ['df','-h']
+  output = utils.run_command(diskspaceCmd, capture_output=True)
+  print("Disk check:\n %s", output.stdout)
+  print("\n")
 
   # CMake build 
   # cmake --build build -j 8 
@@ -128,14 +144,14 @@ def main():
     # Example:  cmake --build build -j 8 --target firebase_app firebase_auth
     cmd.append('--target')
     cmd.extend(args.target)
+
   p = subprocess.Popen(cmd)
   while(p.poll() is None):
-    total, used, free = shutil.disk_usage("/")
-    print("Disk check:\n")
-    print("Total: {0}\n".format(tota/1000000))
-    print("Used: {0}\n".format(used/1000000))
-    print("Free: {0}\n".format(free/1000000))
-    time.sleep(180)
+    diskspaceCmd = ['df','-h']
+    output = utils.run_command(diskspaceCmd, capture_output=True)
+    print("Disk check:\n %s", output.stdout)
+    print("\n")
+    time.sleep(120)
     
   #utils.run_command(cmd)
 

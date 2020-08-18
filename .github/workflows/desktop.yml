@@ -24,12 +24,6 @@ jobs:
           architecture: "x64"
           vcpkg_triplet: "x64-windows-static"
           msbuild_platform: "x64"
-        - os: ubuntu-latest
-          architecture: "x64"
-          vcpkg_triplet: "x64-linux"
-        - os: macos-latest
-          architecture: "x64"
-          vcpkg_triplet: "x64-osx"
 
     steps:
       - uses: actions/checkout@v2
