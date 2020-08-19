@@ -143,7 +143,7 @@ def main():
   print("\n")
   
   print ("After vcpkg: check size of external")
-  diskspaceCmd = ['df','-h', 'external']
+  diskspaceCmd = ['du','-sch', 'external/*']
   output = utils.run_command(diskspaceCmd, capture_output=True)
   print("Disk check:\n %s", output.stdout)
   print("\n")
@@ -174,7 +174,7 @@ def main():
     print("\n")
 
     print("Build directory disk space usage")
-    diskspaceCmd = ['df','-h', 'build']
+    diskspaceCmd = ['du','-sch', 'build/*']
     output = utils.run_command(diskspaceCmd, capture_output=True)
     print("Disk check:\n %s", output.stdout)
     print("\n")
