@@ -39,6 +39,7 @@ import os
 import utils
 import subprocess
 import time
+import shutil
 
 
 def install_cpp_dependencies_with_vcpkg(arch):
@@ -71,6 +72,14 @@ def install_cpp_dependencies_with_vcpkg(arch):
   utils.run_command([vcpkg_executable_file_path, 'install',
                      '@' + vcpkg_response_file_path, '--disable-metrics'])
 
+  vcpkg_root_dir_path = utils.get_vcpkg_root_dir_path()
+
+  # Clear temporary directories and files created by vcpkg
+  # buildtrees could be several GBs
+  buildtrees_dir_path = os.path.join(vcpkg_root_dir_path, 'buildtrees')
+  shutil.rmtree(buildtrees_dir_path)
+  downloads_dir_path = os.path.join(vcpkg_root_dir_path, 'downloads')
+  shutil.rmtree(downloads_dir_path)
 
 def cmake_configure(build_dir, arch, build_tests=True, config=None):
   """ CMake configure.
