@@ -77,9 +77,13 @@ def install_cpp_dependencies_with_vcpkg(arch):
   # Clear temporary directories and files created by vcpkg
   # buildtrees could be several GBs
   buildtrees_dir_path = os.path.join(vcpkg_root_dir_path, 'buildtrees')
-  shutil.rmtree(buildtrees_dir_path)
+  if os.path.exists(buildtrees_dir_path):
+    shutil.rmtree(buildtrees_dir_path)
+
   downloads_dir_path = os.path.join(vcpkg_root_dir_path, 'downloads')
-  shutil.rmtree(downloads_dir_path)
+  if os.path.exists(downloads_dir_path):
+    shutil.rmtree(downloads_dir_path)
+
 
 def cmake_configure(build_dir, arch, build_tests=True, config=None):
   """ CMake configure.
