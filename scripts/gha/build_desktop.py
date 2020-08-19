@@ -178,7 +178,20 @@ def main():
     print("\n")
 
     time.sleep(120)
-    
+
+  print("Final System disk space usage")
+  diskspaceCmd = ['df','-h']
+  output = utils.run_command(diskspaceCmd, capture_output=True)
+  print("Disk check:\n %s", output.stdout)
+  print("\n")
+
+  print("Final Build directory disk space usage")
+  diskspaceCmd = ['du','-sch', 'build/*']
+  output = utils.run_command(diskspaceCmd, capture_output=True)
+  print("Disk check:\n %s", output.stdout)
+  print("\n")
+
+   
   #utils.run_command(cmd)
 
 
