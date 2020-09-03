@@ -15,6 +15,7 @@
 #include "firebase_test_framework.h"  // NOLINT
 
 #include <cstdio>
+#include <iostream>
 
 #include "firebase/future.h"
 
@@ -98,15 +99,19 @@ void FirebaseTest::TerminateApp() {
 
 bool FirebaseTest::WaitForCompletion(const firebase::FutureBase& future,
                                      const char* name, int expected_error) {
+
+  std::cout << "WaitForCompletion" << std::endl;
   app_framework::LogDebug("WaitForCompletion %s", name);
   while (future.status() == firebase::kFutureStatusPending) {
     app_framework::ProcessEvents(100);
   }
+  std::cout << "WaitForCompletion: future status is no longer pending" << std::endl;
   EXPECT_EQ(future.status(), firebase::kFutureStatusComplete)
       << name << " returned an invalid status.";
   EXPECT_EQ(future.error(), expected_error)
       << name << " returned error " << future.error() << ": "
       << future.error_message();
+  std::cout << "WaitForCompletion: about to return" << std::endl;
   return (future.status() == firebase::kFutureStatusComplete &&
           future.error() == expected_error);
 }
