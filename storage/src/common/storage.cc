@@ -19,6 +19,7 @@
 
 #include <map>
 #include <string>
+#include <iostream>
 
 #include "app/src/assert.h"
 #include "app/src/cleanup_notifier.h"
@@ -175,6 +176,7 @@ StorageReference Storage::GetReference() const {
 }
 
 StorageReference Storage::GetReference(const char* path) const {
+  std::cout << "Storage Get references: " << path <<std::endl;
   return internal_ ? StorageReference(internal_->GetReference(path))
                    : StorageReference(nullptr);
 }

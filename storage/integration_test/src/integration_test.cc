@@ -19,6 +19,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
+#include <iostream>
 
 #include "app_framework.h"  // NOLINT
 #include "firebase/app.h"
@@ -204,11 +205,11 @@ void FirebaseStorageTest::SignIn() {
 firebase::storage::StorageReference FirebaseStorageTest::CreateFolder() {
   // Generate a folder for the test data based on the time in milliseconds.
   int64_t time_in_microseconds = GetCurrentTimeInMicroseconds();
-
   char buffer[21] = {0};
   snprintf(buffer, sizeof(buffer), "%lld",
            static_cast<long long>(time_in_microseconds));  // NOLINT
   saved_url_ = buffer;
+  std::cout << "Buffer: "<< std::string(buffer) <<std::endl;
   return storage_->GetReference(kRootNodeName).Child(saved_url_);
 }
 
@@ -227,6 +228,7 @@ TEST_F(FirebaseStorageTest, TestCreateWorkingFolder) {
   SignIn();
   // Create a unique child in the storage that we can run our tests in.
   firebase::storage::StorageReference ref = CreateFolder();
+  std::cout << "CreateWorking Folder: "<< ref.full_path().c_str() <<std::endl;
   EXPECT_NE(saved_url_, "");
 
   LogDebug("Storage URL: gs://%s%s", ref.bucket().c_str(),
@@ -237,6 +239,7 @@ TEST_F(FirebaseStorageTest, TestCreateWorkingFolder) {
   {
     firebase::storage::StorageReference ref_from_str =
         storage_->GetReference(std::string(kRootNodeName)).Child(saved_url_);
+    std::cout << "CreateWorking Folder(ref_from_str): "<< ref_from_str.full_path().c_str() <<std::endl;
     EXPECT_EQ(ref.bucket(), ref_from_str.bucket());
     EXPECT_EQ(ref.full_path(), ref_from_str.full_path());
   }
@@ -244,11 +247,13 @@ TEST_F(FirebaseStorageTest, TestCreateWorkingFolder) {
   LogDebug("Calling GetReferenceFromUrl(%s)", url.c_str());
   firebase::storage::StorageReference ref_from_url =
       storage_->GetReferenceFromUrl(url.c_str()).Child(saved_url_);
+    std::cout << "CreateWorking Folder(ref_from_url): "<< ref_from_url.full_path().c_str() <<std::endl;
   EXPECT_TRUE(ref_from_url.is_valid());
   EXPECT_EQ(ref.bucket(), ref_from_url.bucket());
   EXPECT_EQ(ref.full_path(), ref_from_url.full_path());
   firebase::storage::StorageReference ref_from_url_str =
       storage_->GetReferenceFromUrl(url).Child(saved_url_);
+    std::cout << "CreateWorking Folder(ref_from_url_str): "<< ref_from_url_str.full_path().c_str() <<std::endl;
   EXPECT_TRUE(ref_from_url_str.is_valid());
   EXPECT_EQ(ref.bucket(), ref_from_url_str.bucket());
   EXPECT_EQ(ref.full_path(), ref_from_url_str.full_path());
