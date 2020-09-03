@@ -100,7 +100,7 @@ jobs:
         with:
           name: ${{ matrix.os }}-storage-integration_test
           path: |
-            build/testapps/FirebaseStorage/integration_test/integration_test
+            testapps/FirebaseStorage/integration_test/integration_test
 
       - name: Archive built integration test(win)
         uses: actions/upload-artifact@v2
@@ -108,4 +108,4 @@ jobs:
         with:
           name: ${{ matrix.os }}-storage-integration_test
           path: |
-            build/testapps/FirebaseStorage/integration_test/Debug/integration_test.exe
+            testapps/FirebaseStorage/integration_test/Debug/integration_test.exe
