@@ -21,6 +21,7 @@
 #include <ctime>
 #include <map>
 #include <string>
+#include <iostream>
 
 #include "app_framework.h"  // NOLINT
 #include "firebase/app.h"
@@ -258,12 +259,15 @@ void FirebaseDatabaseTest::SignIn() {
   LogDebug("Signing in.");
   firebase::Future<firebase::auth::User*> sign_in_future =
       auth_->SignInAnonymously();
+  std::cout << "Future created " << std::endl;
   WaitForCompletion(sign_in_future, "SignInAnonymously");
+  std::cout << "Waiting for future completed " << std::endl;
   if (sign_in_future.error() != 0) {
     FAIL() << "Ensure your application has the Anonymous sign-in provider "
               "enabled in Firebase Console.";
   }
   ProcessEvents(100);
+  std::cout << "Processed all events" << std::endl;
 }
 
 firebase::database::DatabaseReference FirebaseDatabaseTest::CreateWorkingPath(
@@ -287,9 +291,11 @@ TEST_F(FirebaseDatabaseTest, TestSignIn) {
 }
 
 TEST_F(FirebaseDatabaseTest, TestCreateWorkingPath) {
+  std::cout << "Attempting to sign in "<< std::endl;
   SignIn();
   firebase::database::DatabaseReference working_path = CreateWorkingPath();
   LogInfo("Database URL: %s", working_path.url().c_str());
+  std::cout << "Database URL: "<< working_path.url().c_str() <<std::endl;
   EXPECT_TRUE(working_path.is_valid());
   EXPECT_FALSE(working_path.url().empty());
   EXPECT_EQ(working_path.url().find(database_->GetReference().url()), 0)
@@ -306,7 +312,9 @@ static const bool kSimpleBool = true;
 
 TEST_F(FirebaseDatabaseTest, TestSetAndGetSimpleValues) {
   const char* test_name = test_info_->name();
+  std::cout << "Attempting to sign in "<< std::endl;
   SignIn();
+  std::cout << "Creating working path tsagsv"<< std::endl;
   firebase::database::DatabaseReference ref = CreateWorkingPath();
 
   {
@@ -418,6 +426,7 @@ class ExpectValueListener : public firebase::database::ValueListener {
 TEST_F(FirebaseDatabaseTest, TestReadingFromPersistanceWhileOffline) {
   const char* test_name = test_info_->name();
 
+  std::cout << "Attempting to sign in "<< std::endl;
   SignIn();
   // database_->set_persistence_enabled(true); // Already set in Initialize().
 
