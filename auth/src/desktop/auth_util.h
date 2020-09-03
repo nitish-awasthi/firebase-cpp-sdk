@@ -17,6 +17,7 @@
 
 #include <memory>
 #include <vector>
+#include <iostream>
 
 #include "app/rest/request.h"
 #include "app/rest/transport_builder.h"
@@ -95,7 +96,7 @@ inline Future<ResultT> CallAsync(
   FIREBASE_ASSERT_RETURN(Future<ResultT>(), auth_data && callback);
 
   typedef AuthDataHandle<ResultT, RequestT> HandleT;
-
+  std::cout << "auth_util.h adding callback to scheduler " <<std::endl;
   auto scheduler_callback = NewCallback(
       [](HandleT* const raw_auth_data_handle) {
         std::unique_ptr<HandleT> handle(raw_auth_data_handle);
@@ -104,6 +105,7 @@ inline Future<ResultT> CallAsync(
       new HandleT(auth_data, promise, std::move(request), callback));
   auto auth_impl = static_cast<AuthImpl*>(auth_data->auth_impl);
   auth_impl->scheduler_.Schedule(scheduler_callback);
+  std::cout << "auth_util.h callback scheduled " <<std::endl;
 
   return promise.future();
 }

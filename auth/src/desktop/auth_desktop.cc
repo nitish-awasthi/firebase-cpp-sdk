@@ -17,6 +17,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <iostream>
 
 #include "app/rest/transport_curl.h"
 #include "app/src/app_common.h"
@@ -293,11 +294,13 @@ Future<SignInResult> Auth::SignInWithProvider(
 }
 
 Future<User*> Auth::SignInAnonymously() {
+  std::cout << "Creating promise: sign in anon" <<std::endl;
   Promise<User*> promise(&auth_data_->future_impl, kAuthFn_SignInAnonymously);
 
   // If user is already signed in anonymously, return immediately.
   bool is_anonymous = false;
   User* api_user_to_return = nullptr;
+  std::cout << "Try to read: " <<std::endl;
   UserView::TryRead(auth_data_, [&](const UserView::Reader& reader) {
     is_anonymous = reader->is_anonymous;
     api_user_to_return = &auth_data_->current_user;
@@ -308,9 +311,11 @@ Future<User*> Auth::SignInAnonymously() {
     return promise.LastResult();
   }
 
+  std::cout << "Wasn't signed in anon already " <<std::endl;
   typedef SignUpNewUserRequest RequestT;
   auto request = std::unique_ptr<RequestT>(  // NOLINT
       new RequestT(GetApiKey(*auth_data_)));
+  std::cout << "sign in anon request made for api key" <<std::endl;
 
   return CallAsync(auth_data_, promise, std::move(request),
                    PerformSignInFlow<SignUpNewUserResponse>);
