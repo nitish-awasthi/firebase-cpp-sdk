@@ -93,19 +93,3 @@ jobs:
           NDK_ROOT: '/tmp/android-ndk-r16b'
         run: |
           python scripts/gha/build_testapps.py --t ${{ github.event.inputs.apis }} --p ${{ matrix.target_platform }} --output_directory ${{ github.workspace }} --use_vcpkg --execute_desktop_testapp --noadd_timestamp
-
-      - name: Archive built integration test(linux)
-        uses: actions/upload-artifact@v2
-        if: failure() && matrix.target_platform == 'Desktop' && startsWith(matrix.os, 'macos')
-        with:
-          name: ${{ matrix.os }}-storage-integration_test
-          path: |
-            testapps/FirebaseStorage/integration_test/integration_test
-
-      - name: Archive built integration test(win)
-        uses: actions/upload-artifact@v2
-        if: failure() && matrix.target_platform == 'Desktop' && startsWith(matrix.os, 'windows')
-        with:
-          name: ${{ matrix.os }}-storage-integration_test
-          path: |
-            testapps/FirebaseStorage/integration_test/Debug/integration_test.exe
