@@ -194,12 +194,15 @@ void FirebaseStorageTest::SignIn() {
   LogDebug("Signing in.");
   firebase::Future<firebase::auth::User*> sign_in_future =
       auth_->SignInAnonymously();
+  std::cout << "Future created " << std::endl;
   WaitForCompletion(sign_in_future, "SignInAnonymously");
+  std::cout << "Waiting for future completed " << std::endl;
   if (sign_in_future.error() != 0) {
     FAIL() << "Ensure your application has the Anonymous sign-in provider "
               "enabled in Firebase Console.";
   }
   ProcessEvents(100);
+  std::cout << "Processed all events" << std::endl;
 }
 
 firebase::storage::StorageReference FirebaseStorageTest::CreateFolder() {
@@ -225,6 +228,7 @@ TEST_F(FirebaseStorageTest, TestSignIn) {
 }
 
 TEST_F(FirebaseStorageTest, TestCreateWorkingFolder) {
+  std::cout << "Attempting to sign in "<< std::endl;
   SignIn();
   // Create a unique child in the storage that we can run our tests in.
   firebase::storage::StorageReference ref = CreateFolder();
