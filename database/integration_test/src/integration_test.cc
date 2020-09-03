@@ -243,6 +243,8 @@ void FirebaseDatabaseTest::Terminate() {
     database_ = nullptr;
   }
   if (auth_) {
+    auth_->SignOut();
+    ProcessEvents(200);
     LogDebug("Shutdown the Auth library.");
     delete auth_;
     auth_ = nullptr;
